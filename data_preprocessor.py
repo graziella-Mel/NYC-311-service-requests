@@ -3,20 +3,40 @@ import numpy as np
 from utils import preprocessTime, addHolidays, removeOutliers
 
 
-def preprocessDataset(df, sample_frac=0.5):
-    """ Preprocess a chunk of data """
+def preprocessDataset(data):
+    """
+    Preprocesses the 311 service request dataset by cleaning, transforming, and engineering features.
 
-    # Randomly sample a fraction of the data
-    # df = df.sample(frac=sample_frac, random_state=42)
+    Steps performed:
+    - Converts 'Created Date' and 'Closed Date' from string to datetime format.
+    - Sorts the dataset by 'Created Date' and retains only the last 1/6th of the records.
+    - Drops rows with missing values.
+    - Computes the response time in hours.
+    - Extracts time-related features from both 'Created Date' and 'Closed Date'.
+    - Adds a holiday indicator feature based on 'Created Date'.
+    - Transforms latitude and longitude into cyclic features (sin/cos).
+    - Removes duplicate rows.
+    - Filters out rows with negative response times.
+    - Removes statistical outliers from the 'response_time' column.
+    - Applies a log transformation to the response time and stores it in a new column 'logResponseTime'.
+
+    Input:
+        data: Dataframe containing 311 service request records.
+
+    Returns:
+        Cleaned and feature-engineered dataframe with 'logResponseTime' as the target variable.
+    """
+
+    df = data.copy()
 
     # Convert string columns to datetime
     df['Created Date'] = pd.to_datetime(df['Created Date'], format='%m/%d/%Y %I:%M:%S %p', errors='coerce')
-    df['Closed Date'] = pd.to_datetime(df['Closed Date'], format='%m/%d/%Y %I:%M:%S %p', errors='coerce')
 
-    # Cutting the data to 6th its size, choosing the latest created service requests
     df = df.sort_values(by='Created Date')
-    half_size = len(df) // 6
-    df = df.iloc[:half_size]
+    sixth_size = len(df) // 6
+    df = df.iloc[-sixth_size:]
+
+    df['Closed Date'] = pd.to_datetime(df['Closed Date'], format='%m/%d/%Y %I:%M:%S %p', errors='coerce')
 
     # Drop rows with missing values
     df = df.dropna()
