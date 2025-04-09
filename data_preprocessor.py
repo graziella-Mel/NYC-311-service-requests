@@ -33,7 +33,7 @@ def preprocessDataset(data):
     df['Created Date'] = pd.to_datetime(df['Created Date'], format='%m/%d/%Y %I:%M:%S %p', errors='coerce')
 
     df = df.sort_values(by='Created Date')
-    sixth_size = len(df) // 6
+    sixth_size = len(df) // 4
     df = df.iloc[-sixth_size:]
 
     df['Closed Date'] = pd.to_datetime(df['Closed Date'], format='%m/%d/%Y %I:%M:%S %p', errors='coerce')

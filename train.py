@@ -72,7 +72,6 @@ def modelData(df, test_size, random_state, stratify):
         'eval_metric': 'rmse',
         'max_depth': 9,
         'learning_rate': 0.3,
-        'n_estimators': 300,
         'subsample': 1.0,
     }
     
@@ -148,7 +147,6 @@ def modelDataWithGridSearch(df, test_size, random_state, stratify):
     random_forest_model = RandomForestRegressor()
     gradient_boosting_model = GradientBoostingRegressor()
     svr_model = SVR()
-    kernel = 1.0 * RBF()
     gaussian_process_model = GaussianProcessRegressor()
     xgboost_model = xgb.XGBRegressor(objective='reg:squarederror', eval_metric='rmse')
 
