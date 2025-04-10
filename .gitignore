@@ -11,4 +11,4 @@ venv/
 .ipynb_checkpoints/
 
 # Ignore model artifacts
-*.pkl
+# *.pkl
