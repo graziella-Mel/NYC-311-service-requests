@@ -29,6 +29,7 @@ def preprocessDataset(data):
 
     df = data.copy()
 
+    df = df.dropna(subset=['Created Date', 'Closed Date'])
     # Convert string columns to datetime
     df['Created Date'] = pd.to_datetime(df['Created Date'], format='%m/%d/%Y %I:%M:%S %p', errors='coerce')
 
